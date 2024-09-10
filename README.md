@@ -1,1 +1,2 @@
-# calorie-estimator
+# Calorie Estimator
+Code for calorie estimator calculator. 
