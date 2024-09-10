@@ -33,8 +33,8 @@ jobs:
             latest
             1.0
 
-      - name: Print metadata tags
-        run: echo "Tags: ${{ steps.meta.outputs.tags }}"
+      - name: Save metadata tags to file
+        run: echo "${{ steps.meta.outputs.tags }}" > metadata-tags.txt
 
       - name: Build and push Docker image
         id: push
