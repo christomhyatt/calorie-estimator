@@ -33,8 +33,15 @@ jobs:
             latest
             1.0
 
-      - name: Save metadata tags to file
-        run: echo "${{ steps.meta.outputs.tags }}" > metadata-tags.txt
+      - name: Clean metadata tags
+        id: clean-tags
+        run: |
+          # Extract tags from metadata
+          echo "Raw Tags: ${{ steps.meta.outputs.tags }}"
+          # Remove extra characters and unwanted parts
+          cleaned_tags=$(echo "${{ steps.meta.outputs.tags }}" | sed 's|[^a-zA-Z0-9._-]||g')
+          echo "Cleaned Tags: $cleaned_tags"
+          echo "TAGS=$cleaned_tags" >> $GITHUB_ENV
 
       - name: Build and push Docker image
         id: push
@@ -43,8 +50,8 @@ jobs:
           context: .
           file: ./Dockerfile
           push: true
-          # Temporarily hardcode tags for testing
-          tags: cmhyatt/calorie-estimator:latest, cmhyatt/calorie-estimator:1.0
+          tags: ${{ env.TAGS }}
+          labels: ${{ steps.meta.outputs.labels }}
 
       - name: Generate artifact attestation
         uses: actions/attest-build-provenance@v1
