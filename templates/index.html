@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Calorie Calculator</title>
+    <style>
+        /* * {
+            box-sizing: border-box;
+        } */
+        
+        body {
+            margin: 0;
+            padding-top: 10%;
+            padding: 0;
+            background-color: #2C2F33;
+            color: #ffffff;
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            min-height: 100vh;
+        }
+
+        .container {
+            background-color: #23272A;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.4);
+            width: 100%;
+            max-width: 400px;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+        }
+
+        label {
+            font-size: 1rem;
+            display: block;
+            margin-bottom: 8px;
+        }
+
+        input[type="text"] {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 20px;
+            border: 1px solid #7289DA;
+            border-radius: 5px;
+            background-color: #99AAB5;
+            color: #000000;
+        }
+
+        input[type="submit"] {
+            background-color: #7289DA;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            font-size: 1.2rem;
+            cursor: pointer;
+        }
+
+        input[type="submit"]:hover {
+            background-color: #677BC4;
+        }
+
+        h2 {
+            margin-top: 20px;
+        }
+
+        .result {
+            background-color: #7289DA;
+            color: white;
+            padding: 15px;
+            border-radius: 10px;
+            margin-top: 20px;
+        }
+
+        a.custom-link {
+            color: green;
+        }
+
+        p.small-font {
+            font-size: 10px;
+        }
+
+        @media screen and (max-width: 600px) and (orientation: portrait) {
+            /* Styles for screens with a width of 600px or less */
+            body {
+                padding-top: 50px; /* Extra padding for smaller screens */
+            } 
+
+            h1 {
+                font-size: 1.5rem; /* Smaller font for the title */
+            }
+
+            input {
+                font-size: 14px;
+                width: 40%; /* Make inputs wider to fit better */
+            }
+
+            p {
+                font-size: 14px;
+            }
+
+            label {
+                font-size: 14px
+            }
+        }
+
+        @media screen and (max-width: 600px) and (orientation: landscape) {
+            /* Styles for screens with a width of 600px or less */
+            body {
+                padding-top: 20px; /* Extra padding for smaller screens */
+            } 
+
+            input {
+                font-size: 14px;
+                width: 80%; /* Make inputs wider to fit better */
+            }
+
+            p {
+                font-size: 14px;
+            }
+
+            label {
+                font-size: 14px
+            }
+        }
+
+        #unit-options {
+            display: flex;
+            justify-content: center;
+            gap: 20px; /* Adds space between the options */
+            margin-bottom: 20px; /* Adds spacing from the next form element */
+        }
+
+        #unit-options label {
+            font-size: 1rem;
+            cursor: pointer; /* Makes the label clickable */
+            align-items: center; /* Aligns the text and radio buttons vertically */
+            display: flex;
+        }
+
+        #unit-options input[type="radio"] {
+            margin-right: 5px; /* Adds space between the radio button and label text */
+        }
+
+    </style>
+
+    <!-- JS to change the titles of the lables without having to refresh the page (e.g., Python)-->
+    <script>
+        function updateLabels() {
+            var unit = document.querySelector('input[name="units"]:checked').value;
+            
+            if (unit === 'imperial') {
+                document.getElementById('body_weight_label').textContent = 'Body Weight (lb):';
+                document.getElementById('distance_label').textContent = 'Distance (mi):';
+                document.getElementById('elevation_gain_label').textContent = 'Elevation Gain (ft):';
+            } else {
+                document.getElementById('body_weight_label').textContent = 'Body Weight (kg):';
+                document.getElementById('distance_label').textContent = 'Distance (km):';
+                document.getElementById('elevation_gain_label').textContent = 'Elevation Gain (m):';
+            }
+        }
+    </script>
+</head>
+<body>
+    <div class="container">
+        <h1>Calorie Calculator</h1>
+        <form method="POST">
+            <label for="units">Choose unit:</label>
+            <div id="unit-options">
+                <label>
+                    <input type="radio" name="units" value="imperial" onchange="updateLabels()" checked>
+                    Imperial
+                </label>
+                <label>
+                    <input type="radio" name="units" value="metric"onchange="updateLabels()">
+                    Metric
+                </label>
+            </div>
+            <br>
+            <label id="body_weight_label" for="body_weight">Body Weight (lb):</label>
+            <input type="text" id="body_weight" name="body_weight" required><br><br>
+            
+            <label id="distance_label" for="distance">Distance (mi):</label>
+            <input type="text" id="distance" name="distance" required><br><br>
+
+            <label id="elevation_gain_label" for="elevation_gain">Elevation Gain (ft):</label>
+            <input type="text" id="elevation_gain" name="elevation_gain" required><br><br>
+
+            <label for="expected_time_h">Expected Time (h):</label>
+            <input type="text" id="expected_time_h" name="expected_time_h" required><br><br>
+            
+            <input type="submit" value="Calculate">
+        </form>
+    
+        {% if result %}
+            <div class="result">
+                <p>{{ result | safe }}</p>
+            </div>
+        {% endif %}
+
+        <p class="small-font"><i>Calorie calculation formula inspired by <a href="https://thestringbean.co/fueling-and-nutrition-for-marathons-ultras-and-fkts/" class='custom-link'>Fueling and Nutrition for Marathons, Ultras, and FKTs</a> by Joe McConaughy.</i></p>
+
+    </div>
+</body>
+</html>
