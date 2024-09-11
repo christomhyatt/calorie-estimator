@@ -67,6 +67,7 @@ jobs:
           push-to-registry: true
   update_ssh_linode:
     name: Telling Linode Server to Update
+    needs: "push_to_registry"
     runs-on: ubuntu-latest
     steps:
     - name: executing remote ssh commands using password
