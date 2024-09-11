@@ -3,13 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="desription" content="Plan your race nutrition with this runner's calorie calculator. 
+                                    As an ultra runner, I created this tool to estimate calories burned during runs and determine optimal fueling. 
+                                    Avoid bonking in marathons and long-distance races.">
+    <meta name="google-adsense-account" content="ca-pub-7470056995223680">
 
-    <title>Calorie Calculator</title>
+    <title>Runner's Calorie Calculator | Estimate Burn & Avoid Bonking</title>
     <style>
-        /* * {
-            box-sizing: border-box;
-        } */
-        
         body {
             margin: 0;
             padding-top: 10%;
@@ -23,25 +23,23 @@
             text-align: center;
             min-height: 100vh;
         }
-
-        .container {
-            background-color: #23272A;
-            padding: 30px;
-            border-radius: 10px;
-            box-shadow: 0 0 15px rgba(0, 0, 0, 0.4);
-            width: 100%;
-            max-width: 400px;
-        }
-
         h1 {
             font-size: 2.5rem;
             margin-bottom: 20px;
         }
-
+        h2 {
+            margin-top: 20px;
+        }
         label {
             font-size: 1rem;
             display: block;
             margin-bottom: 8px;
+        }
+        a.custom-link {
+            color: rgb(105, 186, 111);
+        }
+        p.small-font {
+            font-size: 10px;
         }
 
         input[type="text"] {
@@ -53,7 +51,6 @@
             background-color: #99AAB5;
             color: #000000;
         }
-
         input[type="submit"] {
             background-color: #7289DA;
             color: white;
@@ -63,15 +60,18 @@
             font-size: 1.2rem;
             cursor: pointer;
         }
-
         input[type="submit"]:hover {
             background-color: #677BC4;
         }
 
-        h2 {
-            margin-top: 20px;
+        .container {
+            background-color: #23272A;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.4);
+            width: 100%;
+            max-width: 400px;
         }
-
         .result {
             background-color: #7289DA;
             color: white;
@@ -79,54 +79,67 @@
             border-radius: 10px;
             margin-top: 20px;
         }
-
-        a.custom-link {
-            color: green;
+        .description {
+            display: none;
+            margin-top: 10px;
+            padding: 10px;
+            background-color: #23272A;
+            border-radius: 5px;
+        }
+        .toggle-btn {
+            cursor: pointer;
+            color: rgb(105, 186, 111);
+            text-decoration: underline;
+        }
+        .form-container {
+            position: relative;
+            overflow: hidden;
+            padding-top: 56.25%; /* 16:9 aspect ratio */
+            display: none; /* Hide the form container by default */
+        }
+        .form-container iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: 0;
         }
 
-        p.small-font {
-            font-size: 10px;
-        }
-
+        /* change html layout when the screen is smaller than 600px e.g., phone and in potrait mode */
         @media screen and (max-width: 600px) and (orientation: portrait) {
             /* Styles for screens with a width of 600px or less */
             body {
                 padding-top: 50px; /* Extra padding for smaller screens */
             }
-
             h1 {
                 font-size: 1.5rem; /* Smaller font for the title */
             }
-
             input {
                 font-size: 14px;
                 width: 40%; /* Make inputs wider to fit better */
             }
-
             p {
                 font-size: 14px;
             }
-
             label {
                 font-size: 14px
             }
         }
 
+        /* change html layout when the screen is smaller than 600px e.g., phone and turned to landscape mode */
         @media screen and (max-width: 600px) and (orientation: landscape) {
             /* Styles for screens with a width of 600px or less */
             body {
                 padding-top: 20px; /* Extra padding for smaller screens */
             }
-
             input {
                 font-size: 14px;
                 width: 80%; /* Make inputs wider to fit better */
             }
-
             p {
                 font-size: 14px;
             }
-
             label {
                 font-size: 14px
             }
@@ -138,14 +151,12 @@
             gap: 20px; /* Adds space between the options */
             margin-bottom: 20px; /* Adds spacing from the next form element */
         }
-
         #unit-options label {
             font-size: 1rem;
             cursor: pointer; /* Makes the label clickable */
             align-items: center; /* Aligns the text and radio buttons vertically */
             display: flex;
         }
-
         #unit-options input[type="radio"] {
             margin-right: 5px; /* Adds space between the radio button and label text */
         }
@@ -155,7 +166,6 @@
     <script>
         function updateLabels() {
             var unit = document.querySelector('input[name="units"]:checked').value;
-            
             if (unit === 'imperial') {
                 document.getElementById('body_weight_label').textContent = 'Body Weight (lb):';
                 document.getElementById('distance_label').textContent = 'Distance (mi):';
@@ -166,12 +176,33 @@
                 document.getElementById('elevation_gain_label').textContent = 'Elevation Gain (m):';
             }
         }
+        function toggleDescription() {
+            var desc = document.getElementById("description");
+            var btn = document.querySelector(".toggle-btn");
+            if (desc.style.display === "block") {
+                desc.style.display = "none";
+                btn.textContent = "Info";
+            } else {
+                desc.style.display = "block";
+                btn.textContent = "Hide";
+            }
+        }
+        function toggleForm() {
+            var formContainer = document.getElementById("form-container");
+            var btn = document.querySelector(".toggle-form-btn");
+            if (formContainer.style.display === "block") {
+                formContainer.style.display = "none";
+                btn.textContent = "Submit Feedback";
+            } else {
+                formContainer.style.display = "block";
+                btn.textContent = "Hide Feedback Form";
+            }
+        }
     </script>
 </head>
 <body>
     <div class="container">
-        <h1>Calorie Calculator</h1>
-        <h2>Estimate the number of calories you will burn over the course of a running race (trail and/or road) as well as an estimated number of calories / carbs needed to consume to avoid bonking!</h2>
+        <h2>Runner's Calorie Calculator</h2>
         <form method="POST">
             <label for="units">Choose unit:</label>
             <div id="unit-options">
@@ -205,9 +236,22 @@
                 <p>{{ result | safe }}</p>
             </div>
         {% endif %}
-
+        <br> 
+        <p class="toggle-btn" onclick="toggleDescription()">Why I made this!</p>
+        <div id="description" class="description">
+            As an ultra runner, I often found myself doing mental math during long races to estimate my calorie needs. 
+            Realizing how crucial proper fueling is to avoid bonking, I decided to create this runner's calorie calculator as a side project. 
+            This tool helps you plan your race nutrition by estimating calories burned during your run and suggesting how much to eat. 
+            I've used it in my own training and races, and now I'm sharing it with fellow runners. 
+            Enjoy, and may it help you crush your next ultra!
+        </div>
+        <br>
+        <p class="toggle-form-btn toggle-btn" onclick="toggleForm()">Submit Feedback</p>
+        <div id="form-container" class="form-container">
+            <iframe src="https://docs.google.com/forms/d/e/1FAIpQLScmd3fMUaAz58-Xc8d8XciF5cImRJr_0efG-Jeiix6nBGBEWQ/viewform?embedded=true" width="640" height="581" frameborder="0" marginheight="0" marginwidth="0">Loading…</iframe>
+        </div>
+        <br>
         <p class="small-font"><i>Calorie calculation formula inspired by <a href="https://thestringbean.co/fueling-and-nutrition-for-marathons-ultras-and-fkts/" class='custom-link'>Fueling and Nutrition for Marathons, Ultras, and FKTs</a> by Joe McConaughy.</i></p>
-
     </div>
 </body>
 </html>
