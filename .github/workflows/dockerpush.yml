@@ -16,7 +16,7 @@ on:
 
 env:
   REGISTRY: docker.io
-  IMAGE_NAME: cmhyatt/calorie-estimator69
+  IMAGE_NAME: cmhyatt/calorie-estimator
 
 jobs:
   push_to_registry:
@@ -65,3 +65,15 @@ jobs:
           subject-name: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
           subject-digest: ${{ steps.push.outputs.digest }}
           push-to-registry: true
+  update_ssh_linode:
+    name: Telling Linode Server to Update
+    runs-on: ubuntu-latest
+    steps:
+    - name: executing remote ssh commands using password
+      uses: appleboy/ssh-action@v1.0.3
+      with:
+        host: ${{ secrets.HOST }}
+        username: ${{ secrets.USERNAME }}
+        password: ${{ secrets.PASSWORD }}
+        port: ${{ secrets.PORT }}
+        script: bash update.sh
