@@ -16,7 +16,7 @@ on:
 
 env:
   REGISTRY: docker.io
-  IMAGE_NAME: cmhyatt/calorie-estimator
+  IMAGE_NAME: cmhyatt/calorie-estimator69
 
 jobs:
   push_to_registry:
